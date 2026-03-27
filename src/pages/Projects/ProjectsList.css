@@ -1,0 +1,275 @@
+.projects-main-container {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.main-header {
+    margin: 40px 20px 0 20px;
+    padding: 0 0 15px 0;
+    border-bottom: 1px solid var(--bg4);
+}
+
+.add-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30%;
+    font-size: 2rem;
+    padding: 0 0 2px 0;
+}
+
+.modal-container {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: var(--modal);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 998;
+}
+
+.modal-container.hidden {
+    display: none;
+}
+
+.modal-container .card {
+    width: 450px;
+    position: relative;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0 0 2px 0;
+
+}
+
+.modal-container .card textarea {
+    height: 200px;
+}
+
+.length-counter {
+    text-align: end;
+    margin: 0;
+    padding: 4px 0 0 0;
+    color: var(--text2);
+}
+
+.length-counter.exceed {
+    color: var(--error);
+}
+
+.modal-container .card .image-container {
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+    border: 2px dashed var(--bg3);
+    border-radius: var(--radius);
+    margin: 0 0 5px 0;
+    transition: all 0.2s;
+    position: relative;
+    padding: 3px 3px 0 3px;
+}
+
+.modal-container .card .image-container:hover {
+    border-color: var(--o4);
+}
+
+.modal-container 
+.card 
+.image-container p {
+    color: var(--text3);
+    padding: 0;
+    margin: 40px 0 0 0;
+}
+
+.modal-container 
+.card 
+.image-container img {
+    max-width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: var(--radius);
+}
+
+.image-second-container {
+    position: relative;
+}
+
+.image-second-container
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+/* list */
+
+.projects-list-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.projects-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    width: auto;
+    height: auto;
+    padding: 20px;
+    gap: 10px;
+    text-align: center;
+    margin: 0 0 60px 0;
+}
+
+.project-card {
+    border: 1px solid var(--bg4);
+    padding: 110px 20px 10px 20px;
+    border-radius: var(--radius);
+    position: relative;
+    min-width: 300px;
+    width: auto;
+    height: 220px;
+    transition: all 0.3s;
+}
+
+.project-card:hover {
+    border-color: var(--o4);
+    transform: translateY(-2px);
+}
+
+.project-card img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.project-card p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-card .name {
+    text-align: start;
+    font-family: var(--font-body);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin: 10px 0 0 0;
+    cursor: pointer;
+
+}
+
+.project-card .description {
+    margin: 5px 0 0 0;
+    text-align: start;
+    color: var(--text3);
+    cursor: pointer;
+}
+
+.project-card .project-actions {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 100;
+    transition: all 0.2s;
+    display: flex;
+    gap: 5px;
+    height: 20px;
+}
+
+.project-card:hover .project-actions {
+    opacity: 1;
+    visibility: visible;
+}
+
+.project-card .project-actions button {
+    margin: 0;
+    border-radius: var(--radius-sml);
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    position: relative;
+}
+
+.project-card .project-actions button img {
+    position: inherit;
+    width: 100%;
+    height: 100%;
+}
+
+.project-card .project-actions .delete-button {
+    background-color: var(--red2);
+}
+
+.project-card .project-actions .delete-button:hover {
+    background-color: var(--red3);
+}
+
+.project-card .project-actions .edit-button {
+    background-color: var(--blue3);
+}
+
+.project-card .project-actions .edit-button:hover {
+    background-color: var(--blue4);
+}
+
+/* pagination */
+.pages-list {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 0 0 10px 0;
+    bottom: 10px;
+    right: 100px;
+    left: 100px;
+    width: auto;
+}
+
+.pages-list .page-button {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--bg);
+    color: var(--o4);
+    border: 2px solid var(--o4);
+}
+
+.pages-list .page-button.selected, .pages-list .page-button:hover {
+    background-color: var(--o3);
+    border-color: var(--o4);
+    color: var(--card);
+}
+
+.pages-list .ellipsis {
+    height: 40px;
+    font-weight: 1000;
+    color: var(--o4);
+    padding: 22px 0 0 0;
+    font-size: 0.8rem;
+}

@@ -1,0 +1,69 @@
+#mainCard {
+    min-width:3400px;
+    min-height: 400px;
+    padding: 30px;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+input {
+    width: 100%;
+}
+
+button {
+    margin: 20px 0 0 0;
+    width: 100%;
+}
+
+p {
+    padding-top: 10px;
+    font-size: 0.9rem;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding-top: 20px
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 2px solid var(--bg3);
+}
+
+.separator span {
+    padding: 10px;
+    font-size: 0.8rem;
+    color: var(--text3)
+}
+
+.button-social {
+    background-color: var(--bg);
+    border: 1px solid var(--bg3);
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.button-social:hover {
+    background-color: var(--o1);
+    border-color: var(--o4);
+    color: var(--o4);
+}
+
+@media screen and (max-width: 500px) {
+    #mainCard {
+        width:350px;
+    }
+}

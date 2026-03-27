@@ -1,0 +1,146 @@
+* {
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJuktqQ4E.woff2) format('woff2');
+    unicode-range: U +0100 -02BA, U +02BD -02C5, U +02C7 -02CC, U +02CE -02D7, U +02DD -02FF, U +0304, U +0308, U +0329, U +1D00 -1DBF, U +1E00 -1E9F, U +1EF2 -1EFF, U +2020, U +20A0 -20AB, U +20AD -20C0, U +2113, U +2C60 -2C7F, U + A720-A7FF;
+}
+
+.hidden {
+    display: none;
+}
+
+:root {
+    --o1: #FFF4ED;
+    --o2: #FFE0C7;
+    --o3: #FFBC8A;
+    --o4: #FF8C36;
+    --o5: #E86A10;
+    --o6: #C04D00;
+    --bg: #FAFAF8;
+    --bg2: #F2F1EE;
+    --bg3: #ECEAE5;
+    --bg4: #d6d3cc;
+    --text: #1A1917;
+    --text2: #5A5753;
+    --text3: #9A9590;
+    --card: #FFFFFF;
+    --red1: #ff745e;
+    --red2: #f75339;
+    --red3: #eb3e23;
+    --red4: #d12e15;
+    --blue1: #91c1ff;
+    --blue2: #549bf7;
+    --blue3: #3081ec;
+    --blue4: #1768d4;
+    --blue5: #0954b8;
+    --link: rgb(34, 174, 255);
+    --radius: 12px;
+    --radius-sml: 8px;
+    --radius-lg: 20px;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+    --error: rgb(255, 89, 47);
+    --error-text: rgb(255, 255, 255);
+    --modal: rgba(0, 0, 0, 0.411);
+}
+
+/* :root[data-theme='dark'] {
+} */
+
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: var(--font-body);
+}
+
+#root {
+    height: 100%;
+}
+
+.card {
+    border-radius: var(--radius);
+    text-align: center;
+    padding: 20px;
+    background-color: var(--card);
+    border: 1px solid var(--bg3);
+}
+
+input[type="text"], input[type="password"], textarea {
+    background-color: var(--bg);
+    font-size: 0.8rem;
+    border: 1px solid var(--bg3);
+    border-radius: 10px;
+    padding: 11px 14px;
+    color: var(--text);
+    margin: 5px 0 5px 0;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--o3);
+}
+
+input[type="text"]::placeholder, input[type="password"]::placeholder, textarea::placeholder {
+    color: var(--text2);
+}
+
+input[type="text"].error, input[type="password"].error, textarea.error {
+    border-color: var(--error);
+}
+
+.error-text {
+    font-family: var(--font-body);
+    color: var(--error);
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--text);
+}
+
+button {
+    background-color: var(--o4);
+    color: var(--card);
+    border: none;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    padding: 11px 14px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background-color: var(--o5);
+}
+
+a {
+    text-decoration: none;
+    color: var(--o4);
+}
+
+a:hover {
+    color: var(--o5);
+}
