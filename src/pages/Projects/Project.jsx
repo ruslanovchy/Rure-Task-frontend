@@ -6,6 +6,7 @@ function Project() {
 
     return (
         <div className='project-main-container'>
+            <h1>Проект</h1>
             <div className='tasks-main-container'>
                 <div className='card tasks-list'></div>
 
