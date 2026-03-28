@@ -22,23 +22,62 @@
     --o4: #FF8C36;
     --o5: #E86A10;
     --o6: #C04D00;
+    
     --bg: #FAFAF8;
     --bg2: #F2F1EE;
     --bg3: #ECEAE5;
     --bg4: #d6d3cc;
+
     --text: #1A1917;
     --text2: #5A5753;
     --text3: #9A9590;
+
     --card: #FFFFFF;
-    --red1: #ff745e;
-    --red2: #f75339;
-    --red3: #eb3e23;
-    --red4: #d12e15;
-    --blue1: #91c1ff;
-    --blue2: #549bf7;
-    --blue3: #3081ec;
-    --blue4: #1768d4;
-    --blue5: #0954b8;
+
+    --red1: #ffdbd6;
+    --red2: #fcb0a5;
+    --red3: #ff9e8f;
+    --red4: #ff8977;
+    --red5: #ff745e;
+    --red6: #f75339;
+    --red7: #eb3e23;
+    --red8: #d12e15;
+
+    --blue1: #d3e5fc;
+    --blue2: #acd0ff;
+    --blue3: #91c1ff;
+    --blue4: #549bf7;
+    --blue5: #3081ec;
+    --blue6: #1768d4;
+    --blue7: #0954b8;
+
+    --yellow1: #fffbe6;
+    --yellow2: #fff3b0;
+    --yellow3: #ffe566;
+    --yellow4: #ffd11a;
+    --yellow5: #f0b800;
+    --yellow6: #c99600;
+    --yellow7: #a37800;
+    --yellow8: #7a5900;
+
+    --green1: #eaf6e8;
+    --green2: #c3e8be;
+    --green3: #8fd487;
+    --green4: #56bc4b;
+    --green5: #34a327;
+    --green6: #228518;
+    --green7: #156610;
+    --green8: #0a4708;
+
+    --gray1: #f7f7f5;
+    --gray2: #eeecea;
+    --gray3: #dcdad6;
+    --gray4: #bab8b3;
+    --gray5: #8e8c88;
+    --gray6: #6b6965;
+    --gray7: #4a4845;
+    --gray8: #2c2b29;
+
     --link: rgb(34, 174, 255);
     --radius: 12px;
     --radius-sml: 8px;

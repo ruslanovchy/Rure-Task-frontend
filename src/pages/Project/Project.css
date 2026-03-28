@@ -1,0 +1,119 @@
+.project-main-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-container {
+    display: flex;
+    margin: 10px;
+    gap: 5px;
+    height: auto;
+    flex-direction: column;
+}
+
+.first-row {
+    display: flex;
+    gap: 10px;
+}
+
+.header-container .first-row button {
+    margin: 0;
+    top: 10px;
+    width: 50px;
+    height: 40px;
+    left: 10px;
+    font-size: 1.2rem;
+    padding: 0 0 3px 0;
+}
+
+.header-container .first-row input {
+    margin: 0;
+}
+
+.second-row {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0 0 0;
+    gap: 14px 30px;
+    flex-wrap: wrap;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.filter-button {
+    margin: 0;
+    padding: 10px 14px 10px 14px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+    text-wrap: nowrap;
+    background-color: var(--gray2);
+    color: var(--gray6);
+}
+
+.filter-button:hover {
+    transform: translateY(-1px);
+}
+
+.filter-button.blue.selected, .filter-button.blue:hover {
+    background-color: var(--blue1);
+    color: var(--blue5);
+}
+
+.filter-button.yellow.selected, .filter-button.yellow:hover {
+    background-color: var(--yellow2);
+    color: var(--yellow7);
+}
+
+.filter-button.green.selected, .filter-button.green:hover {
+    background-color: var(--green2);
+    color: var(--green6);
+}
+
+.filter-button.gray.selected, .filter-button.gray:hover {
+    background-color: var(--gray3);
+    color: var(--gray7);
+}
+
+.filter-button.orange.selected, .filter-button.orange:hover {
+    background-color: var(--o2);
+    color: var(--o6);
+}
+
+.filter-button.red.selected, .filter-button.red:hover {
+    background-color: var(--red1);
+    color: var(--red7);
+}
+
+/* List */
+
+.tasks-main-container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+}
+
+/* Modal */
+
+.create-card {
+    min-width: 520px;
+}
+
+.modal-container .section-p {
+    color: var(--text2);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    margin: 15px 10px 15px 5px;
+    padding: 0;
+    font-weight: 600;
+    text-align: start;
+}
+
+.modal-container .submit-button {
+    margin: 20px 0 0 0;
+}

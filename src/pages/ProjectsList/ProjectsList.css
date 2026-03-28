@@ -31,7 +31,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 998;
+    z-index: 1001;
+    backdrop-filter: blur(4px);
 }
 
 .modal-container.hidden {
@@ -43,6 +44,18 @@
     position: relative;
     overflow-y: auto;
     max-height: 80vh;
+    animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.6) translateY(12px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .close-button {
@@ -221,19 +234,19 @@
 }
 
 .project-card .project-actions .delete-button {
-    background-color: var(--red2);
+    background-color: var(--red6);
 }
 
 .project-card .project-actions .delete-button:hover {
-    background-color: var(--red3);
+    background-color: var(--red8);
 }
 
 .project-card .project-actions .edit-button {
-    background-color: var(--blue3);
+    background-color: var(--blue5);
 }
 
 .project-card .project-actions .edit-button:hover {
-    background-color: var(--blue4);
+    background-color: var(--blue7);
 }
 
 /* pagination */
