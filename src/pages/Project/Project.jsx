@@ -1,7 +1,11 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import './Project.css'
 import { createContext, useContext, useEffect, useState } from 'react';
 import { LoadingContext } from '../../App';
+import { taskValidation } from '../../validation';
+import { api } from '../../api';
+import toast from 'react-hot-toast';
+import { getPageNumbers } from '../../utils/pagination';
 
 const ModeContext = createContext();
 
@@ -11,26 +15,132 @@ function Project() {
     const loadingContext = useContext(LoadingContext);
 
     const params = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Number(searchParams.get('page') || 1);
 
     //#region header
-    const [filterStatus, setFilterStatus] = useState(0);
-    const [filterPriority, setFilterPriority] = useState(0);
+    const [query, setQuery] = useState('');
+    const [debouncedQuery, setDebouncedQuery] = useState(query);
+    const [filterStatus, setFilterStatus] = useState(-1);
+    const [filterPriority, setFilterPriority] = useState(-1);
+    //#endregion
+
+    //#region list
+    const [tasks, setTasks] = useState([]);
     //#endregion
 
     //#region modal
     const [openedModal, setOpenedModal] = useState('');
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalDescription, setModalDescription] = useState('');
     const [modalProjectStatus, setModalProjectStatus] = useState(0);
     const [modalProjectPriority, setModalProjectPriority] = useState(0);
-    const [modalDescription, setModalDescription] = useState('');
+    const [modalErrors, setModalErrors] = useState({});
+    //#endregion
+
+    //#region pagination
+    const [pagesCount, setPagesCount] = useState(1);
     //#endregion
 
     useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedQuery(query);
+        }, 300)
+
+        return () => {
+            clearTimeout(handler);
+        }
+    }, [query])
+
+    useEffect(() => {
+        updatePage();
+    }, [debouncedQuery])
+    
+    useEffect(() => {
         loadingContext.setIsLoading(false);
 
-    }, [])
+        updatePage();
+    }, [page])
+
+    useEffect(() => {
+        updatePage();
+    }, [filterStatus, filterPriority])
+
+    function goToPage(newPage) {
+        const params = new URLSearchParams(searchParams);
+        params.set('page', newPage)
+
+        setSearchParams(params);
+    }
+
+    async function getTasks() {
+        return await api.get(`/tasks?projectId=${params.id}&search=${debouncedQuery}&status=${filterStatus}&priority=${filterPriority}&page=${page}`);
+    }
+
+    async function updatePage() {
+        const response = await getTasks();
+        
+        if (response.status === 200) {
+            const data = response.data;
+            setTasks(data.tasks);
+            setPagesCount(data.totalPages);
+
+            if (page <= 0) {
+                goToPage(1);
+            }
+            else if (data.tasks.length <= 0) {
+                goToPage(data.totalPages)
+            }
+        }
+        else {
+            toast.error(`Произошла ошибка при попытке получить задачи.`);
+        }
+        
+    }
 
     function clearCreateModal() {
 
+    }
+
+    function createSubmit(e) {
+        e.preventDefault();
+
+        const newErrors = {}
+
+        if (!taskValidation.titleRegex.test(modalTitle)) {
+            newErrors.title = 'Неверное название задачи. Название должно содержать от 5 до 100 символов.'
+        }
+
+        if (!taskValidation.descriptionRegex.test(modalDescription)) {
+            newErrors.description = 'Неверное описание. Описание не должно превышать 1000 строк.'
+        }
+
+        if (Object.keys(newErrors).length === 0) {
+            const formData = new FormData();
+
+            formData.append('projectId', params.id);
+            formData.append('title', modalTitle);
+            formData.append('description', modalDescription);
+            formData.append('status', modalProjectStatus);
+            formData.append('priority', modalProjectPriority);
+
+            const promise = api.post('/tasks', formData);
+
+            toast.promise(promise, {
+                loading: 'Идет сохранение...',
+                success: 'Задача успешно сохранена!',
+                error: 'Не удалось сохранить задачу!'
+            });
+
+            promise.then(response => {
+                if (response.status === 200) {
+                    setOpenedModal('');
+                    updatePage();
+                }
+            });
+        }
+        
+        setModalErrors(newErrors);
     }
 
     return (
@@ -45,12 +155,13 @@ function Project() {
                         }}>
                         ⬅
                     </button>
-                    <input type="text" placeholder='Search by title'/>
+                    <input type="text" placeholder='Search by title' value={query} onChange={(e)=>{setQuery(e.target.value)}}/>
                 </div>
 
                 <div className='second-row'>
                     <ModeContext.Provider value={{ mode: filterStatus, setMode: setFilterStatus}}>
                         <div className='filter-container'>
+                                <FilterButton value={-1} color='gray'>Все</FilterButton>
                                 <FilterButton value={0} color='blue'>В планах</FilterButton>
                                 <FilterButton value={1} color='yellow'>В процессе</FilterButton>
                                 <FilterButton value={2} color='green'>Выполнено</FilterButton>
@@ -59,9 +170,10 @@ function Project() {
 
                     <ModeContext.Provider value={{ mode: filterPriority, setMode: setFilterPriority}}>
                         <div className='filter-container'>
-                                <FilterButton value={0} color='blue'>Низкий</FilterButton>
-                                <FilterButton value={1} color='yellow'>Нормальный</FilterButton>
-                                <FilterButton value={2} color='gray'>Средний</FilterButton>
+                                <FilterButton value={-1} color='gray'>Все</FilterButton>
+                                <FilterButton value={0} color='gray'>Низкий</FilterButton>
+                                <FilterButton value={1} color='blue'>Нормальный</FilterButton>
+                                <FilterButton value={2} color='yellow'>Средний</FilterButton>
                                 <FilterButton value={3} color='orange'>Высокий</FilterButton>
                                 <FilterButton value={4} color='red'>Критический</FilterButton>
                         </div>
@@ -69,11 +181,15 @@ function Project() {
                 </div>
 
             </div>
-            <div className='tasks-main-container'>
-
+            <div className='tasks-list'>
+                {
+                    tasks.map((t, i) => {
+                        return <TaskCard key={i} task={t} />
+                    })
+                }
             </div>
 
-            <div className={ !!openedModal ? 'modal-container' : 'modal-container hidden'}>
+            <div className={ !!openedModal ? 'modal-overlay' : 'modal-overlay hidden'}>
                 
                 {
                     openedModal == 'create' || openedModal == 'edit' ?
@@ -83,12 +199,16 @@ function Project() {
                         <button className="close-button"
                             onClick={() => { clearCreateModal(); setOpenedModal(''); }}>✖</button>
 
-                        <input type="text" placeholder='Введите название' />
+                        <input type="text" placeholder='Введите название' 
+                            value={modalTitle}
+                            onChange={(e)=> { setModalTitle(e.target.value); }}/>
+                        {modalErrors.title && <div className="error-text">{modalErrors.title}</div>}
 
                         <textarea value={modalDescription} onChange={(e) => setModalDescription(e.target.value)} placeholder='Введите описание'></textarea>
                         <p className={modalDescription.length > 1000 ? 'length-counter exceed' : 'length-counter'}>
                             {modalDescription.length}/1000
                         </p>
+                        {modalErrors.description && <div className="error-text">{modalErrors.description}</div>}
 
                         <p className='section-p'>Статус</p>
                         <ModeContext.Provider value={{ mode: modalProjectStatus, setMode: setModalProjectStatus}}>
@@ -102,15 +222,20 @@ function Project() {
                         <p className='section-p'>Приоритет</p>
                         <ModeContext.Provider value={{ mode: modalProjectPriority, setMode: setModalProjectPriority}}>
                             <div className='filter-container'>
-                                <FilterButton value={0} color='blue'>Низкий</FilterButton>
-                                <FilterButton value={1} color='yellow'>Нормальный</FilterButton>
-                                <FilterButton value={2} color='gray'>Средний</FilterButton>
+                                <FilterButton value={0} color='gray'>Низкий</FilterButton>
+                                <FilterButton value={1} color='blue'>Нормальный</FilterButton>
+                                <FilterButton value={2} color='yellow'>Средний</FilterButton>
                                 <FilterButton value={3} color='orange'>Высокий</FilterButton>
                                 <FilterButton value={4} color='red'>Критический</FilterButton>
                             </div>
                         </ModeContext.Provider>
 
-                        <button className='submit-button'>Подтвердить</button>
+                        <button className='submit-button'
+                            onClick={createSubmit}>Подтвердить</button>
+                    </div> :
+                    openedModal == 'task-detail' ?
+                    <div className='card task-detail-card'>
+
                     </div> :
                     <></>
                 }
@@ -118,6 +243,24 @@ function Project() {
             </div>
 
             <button className="add-button" onClick={() => setOpenedModal('create')}>+</button>
+
+            <div className="pages-list">
+                {pagesCount > 1 && getPageNumbers(page, pagesCount).map((p, i) => 
+                    p === '...' ?
+                    <div 
+                        className="ellipsis"
+                        key={i}>
+                            ●●●
+                    </div> :
+
+                    <button
+                        key={i}
+                        className={p === page ? 'page-button selected' : 'page-button'}
+                        onClick={() => { goToPage(p); }}>
+                        {p}
+                    </button>
+                )}
+            </div>
         </div>
     )
 }
@@ -137,6 +280,41 @@ function FilterButton(params) {
             }}>
             {params.children}
         </button>
+    )
+}
+
+function TaskCard(params) {
+    const task = params.task;
+
+    const [priorityColor, priorityText] = 
+            task.priority == 0 ?
+            ['gray', '▽ Низкий'] :
+            task.priority == 1 ?
+            ['blue', '◇ Нормальный'] :
+            task.priority == 2 ?
+            ['yellow', '◈ Средний'] :
+            task.priority == 3 ?
+            ['orange', '▲ Высокий'] :
+            ['red', '⚑ Критический'];
+
+    const [statusColor, statusText] = 
+        task.status == 0 ?
+        ['blue', 'В планах'] :
+        task.status == 1 ?
+        ['yellow', 'В процессе'] :
+        ['green', 'Выполнено'];
+        
+
+    return ( 
+        <div className={`task-card ${priorityColor}`}
+            >
+            <div className='task-header'>
+                <p className='title-p'>{task.title}</p>
+                <span className={`status-span ${statusColor}`}>{statusText}</span>
+            </div>
+            <p className='description-p'>{task.description}</p>
+            <p className='priority-p'>{priorityText}</p>
+        </div>
     )
 }
 

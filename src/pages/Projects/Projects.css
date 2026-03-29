@@ -1,0 +1,54 @@
+.pages-list {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 0 0 10px 0;
+    bottom: 10px;
+    right: 100px;
+    left: 100px;
+    width: auto;
+}
+
+.pages-list .page-button {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--bg);
+    color: var(--o4);
+    border: 2px solid var(--o4);
+}
+
+.pages-list .page-button.selected, .pages-list .page-button:hover {
+    background-color: var(--o3);
+    border-color: var(--o4);
+    color: var(--card);
+}
+
+.pages-list .ellipsis {
+    height: 40px;
+    font-weight: 1000;
+    color: var(--o4);
+    padding: 22px 0 0 0;
+    font-size: 0.8rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: var(--modal);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay.hidden {
+    display: none;
+}

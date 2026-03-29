@@ -21,25 +21,7 @@
     padding: 0 0 2px 0;
 }
 
-.modal-container {
-    position: fixed;
-    height: 100vh;
-    width: 100%;
-    background-color: var(--modal);
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
-    backdrop-filter: blur(4px);
-}
-
-.modal-container.hidden {
-    display: none;
-}
-
-.modal-container .card {
+.modal-overlay .card {
     width: 450px;
     position: relative;
     overflow-y: auto;
@@ -69,7 +51,7 @@
 
 }
 
-.modal-container .card textarea {
+.modal-overlay .card textarea {
     height: 200px;
 }
 
@@ -84,7 +66,7 @@
     color: var(--error);
 }
 
-.modal-container .card .image-container {
+.modal-overlay .card .image-container {
     width: 100%;
     height: auto;
     min-height: 100px;
@@ -96,11 +78,11 @@
     padding: 3px 3px 0 3px;
 }
 
-.modal-container .card .image-container:hover {
+.modal-overlay .card .image-container:hover {
     border-color: var(--o4);
 }
 
-.modal-container 
+.modal-overlay 
 .card 
 .image-container p {
     color: var(--text3);
@@ -108,7 +90,7 @@
     margin: 40px 0 0 0;
 }
 
-.modal-container 
+.modal-overlay 
 .card 
 .image-container img {
     max-width: 100%;
@@ -247,42 +229,4 @@
 
 .project-card .project-actions .edit-button:hover {
     background-color: var(--blue7);
-}
-
-/* pagination */
-.pages-list {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin: 0 0 10px 0;
-    bottom: 10px;
-    right: 100px;
-    left: 100px;
-    width: auto;
-}
-
-.pages-list .page-button {
-    width: 40px;
-    height: 40px;
-    margin: 0;
-    padding: 0;
-    border-radius: 50%;
-    background-color: var(--bg);
-    color: var(--o4);
-    border: 2px solid var(--o4);
-}
-
-.pages-list .page-button.selected, .pages-list .page-button:hover {
-    background-color: var(--o3);
-    border-color: var(--o4);
-    color: var(--card);
-}
-
-.pages-list .ellipsis {
-    height: 40px;
-    font-weight: 1000;
-    color: var(--o4);
-    padding: 22px 0 0 0;
-    font-size: 0.8rem;
 }

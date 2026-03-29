@@ -9,6 +9,7 @@ import { projectValidation } from "../../validation";
 import trash_icon from '../../assets/icons/trash-icon.png';
 import pen_icon from '../../assets/icons/pen-icon.png';
 import { images } from "../../assets/projectImages";
+import { getPageNumbers } from "../../utils/pagination";
 
 function ProjectsList() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -78,32 +79,6 @@ function ProjectsList() {
             loadingContext.setIsLoading(false);
         }
     }, [page])
-
-    function getPageNumbers(current, total) {
-        if (total <= 7) {
-            return Array.from({ length: total }, (_, i) => i + 1);
-        }
-
-        let arr = [];
-
-        arr.push(1);
-
-        if (current > 3) {
-            arr.push('...');
-        }
-
-        for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++) {
-            arr.push(i);
-        }
-
-        if (current < total - 2) {
-            arr.push('...');
-        }
-
-        arr.push(total);
-
-        return arr;
-    } 
 
     function goToPage(newPage) {
         const params = new URLSearchParams(searchParams);
@@ -243,7 +218,7 @@ function ProjectsList() {
 
             <button className="add-button" onClick={() => setModalOpened('create')}>+</button>
 
-            <div className={modalOpened ? 'modal-container' : 'modal-container hidden'}>
+            <div className={modalOpened ? 'modal-overlay' : 'modal-overlay hidden'}>
                 {
                     modalOpened === 'create' || modalOpened === 'edit' ?
 

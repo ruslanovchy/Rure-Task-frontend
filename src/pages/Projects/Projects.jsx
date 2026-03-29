@@ -1,4 +1,5 @@
 import { useParams, Outlet } from "react-router-dom";
+import './Projects.css'
 
 function Projects() {
     return (

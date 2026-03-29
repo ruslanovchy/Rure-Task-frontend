@@ -7,4 +7,10 @@ export const projectValidation = {
     descriptionRegex: /^.{0,1000}$/
 }
 
+export const taskValidation = {
+    titleRegex: /^[\p{L}0-9_\- ]{5,100}$/u,
+    descriptionRegex: /^.{0,1000}$/
+}
+
 Object.freeze(projectValidation);
+Object.freeze(taskValidation);
