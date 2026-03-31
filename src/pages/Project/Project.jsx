@@ -6,8 +6,31 @@ import { taskValidation } from '../../validation';
 import { api } from '../../api';
 import toast from 'react-hot-toast';
 import { getPageNumbers } from '../../utils/pagination';
+import trash_icon from '../../assets/icons/trash-icon.png';
+import pen_icon from '../../assets/icons/pen-icon.png';
+import { toShortLocalDate } from '../../utils/date';
 
 const ModeContext = createContext();
+
+function getPriorityProperties(priority) {
+    return priority == 0 ?
+            ['gray', '▽ Низкий'] :
+            priority == 1 ?
+            ['blue', '◇ Нормальный'] :
+            priority == 2 ?
+            ['yellow', '◈ Средний'] :
+            priority == 3 ?
+            ['orange', '▲ Высокий'] :
+            ['red', '⚑ Критический'];
+}
+
+function getStatusProperties(status) {
+    return status == 0 ?
+        ['blue', 'В планах'] :
+        status == 1 ?
+        ['yellow', 'В процессе'] :
+        ['green', 'Выполнено'];
+}
 
 function Project() {
     const navigate = useNavigate();
@@ -36,6 +59,14 @@ function Project() {
     const [modalProjectStatus, setModalProjectStatus] = useState(0);
     const [modalProjectPriority, setModalProjectPriority] = useState(0);
     const [modalErrors, setModalErrors] = useState({});
+
+    const [taskToDelete, setTaskToDelete] = useState(null);
+
+    const [taskToEdit, setTaskToEdit] = useState(null);
+
+    const [taskToDetail, setTaskToDetail] = useState(null);
+    const [taskToDetailStatus, setTaskToDetailStatus] = useState(['blue', 'В планах']);
+    const [taskToDetailPriority, setTaskToDetailPriority] = useState(['blue', 'Низкий']);
     //#endregion
 
     //#region pagination
@@ -65,6 +96,13 @@ function Project() {
     useEffect(() => {
         updatePage();
     }, [filterStatus, filterPriority])
+
+    useEffect(() => {
+        if (taskToDetail) {
+            setTaskToDetailPriority(getPriorityProperties(taskToDetail.priority));
+            setTaskToDetailStatus(getStatusProperties(taskToDetail.status));
+        }
+    }, [taskToDetail])
 
     function goToPage(newPage) {
         const params = new URLSearchParams(searchParams);
@@ -123,8 +161,13 @@ function Project() {
             formData.append('description', modalDescription);
             formData.append('status', modalProjectStatus);
             formData.append('priority', modalProjectPriority);
+            if (openedModal == 'edit') {
+                formData.append('id', taskToEdit.id);
+            }
 
-            const promise = api.post('/tasks', formData);
+            const promise = openedModal == 'create' ?
+                api.post('/tasks', formData) :
+                api.put('/tasks', formData);
 
             toast.promise(promise, {
                 loading: 'Идет сохранение...',
@@ -141,6 +184,67 @@ function Project() {
         }
         
         setModalErrors(newErrors);
+    }
+
+    function openTaskDetailModal(task) {
+        setOpenedModal('detail');
+        setTaskToDetail(task);
+    }
+
+    function moveStatus(task) {
+        if (!task) {
+            return;
+        }
+
+        const promise = api.patch(`/tasks?projectId=${params.id}&id=${task.id}`);
+
+        toast.promise(promise, {
+            loading: 'Идет загрузка...',
+            success: 'Успешно!',
+            error: 'Не удалось изменить статус задачи.'
+        })
+
+        promise.then(response => {
+            if (response.status === 200) {
+                updatePage();
+                setOpenedModal('');
+            }
+        })
+    }
+
+    function submitDelete() {
+        if (!taskToDelete) {
+            return;
+        }
+
+        const promise = api.delete(`/tasks?projectId=${params.id}&id=${taskToDelete.id}`);
+
+        toast.promise(promise, {
+            loading: 'Идет загрузка...',
+            success: 'Успешно!',
+            error: 'Не удалось удалить задачу.'
+        })
+
+        promise.then(response => {
+            if (response.status === 200) {
+                updatePage();
+                setOpenedModal('');
+            }
+        })
+    }
+
+    function openDeleteModal() {
+        setTaskToDelete(taskToDetail);
+        setOpenedModal('delete');
+    }
+
+    function openEditModal() {
+        setTaskToEdit(taskToDetail);
+        setOpenedModal('edit');
+        setModalTitle(taskToDetail.title);
+        setModalDescription(taskToDetail.description);
+        setModalProjectStatus(taskToDetail.status);
+        setModalProjectPriority(taskToDetail.priority);
     }
 
     return (
@@ -184,20 +288,29 @@ function Project() {
             <div className='tasks-list'>
                 {
                     tasks.map((t, i) => {
-                        return <TaskCard key={i} task={t} />
+                        return <TaskCard key={i} task={t} onClick={
+                            () => {
+                                openTaskDetailModal(t);
+                            }
+                        } />
                     })
                 }
             </div>
 
             <div className={ !!openedModal ? 'modal-overlay' : 'modal-overlay hidden'}>
-                
                 {
                     openedModal == 'create' || openedModal == 'edit' ?
-                    <div className='card create-card'>
+                    <div key='create-card' className='card create-card'>
                         <h1>{openedModal === 'create' ? 'Создание задачи' : 'Изменение задачи'}</h1>
 
                         <button className="close-button"
-                            onClick={() => { clearCreateModal(); setOpenedModal(''); }}>✖</button>
+                            onClick={() => {
+                                clearCreateModal(); 
+                                if (openedModal === 'create') 
+                                    setOpenedModal('');
+                                else 
+                                    setOpenedModal('detail');
+                            }}>✖</button>
 
                         <input type="text" placeholder='Введите название' 
                             value={modalTitle}
@@ -233,10 +346,67 @@ function Project() {
                         <button className='submit-button'
                             onClick={createSubmit}>Подтвердить</button>
                     </div> :
-                    openedModal == 'task-detail' ?
-                    <div className='card task-detail-card'>
+                    openedModal == 'detail' ?
+                    <div key='detail-card' className='card task-detail-card'>
 
+                        <button className="close-button"
+                            onClick={() => { clearCreateModal(); setOpenedModal(''); }}>✖</button>
+
+                        <p className='title-p'>{taskToDetail.title}</p>
+                        <p className='description-p'>{taskToDetail.description}</p>
+                        
+                        <div className='other-details'>
+                            <div className='detail-group'>
+                                <p className='title'>Статус</p>
+                                <p className={`status ${taskToDetailStatus[0]}`}>{taskToDetailStatus[1]}</p>
+                            </div>
+                            <div className='detail-group'>
+                                <p className='title'>Приоритет</p>
+                                <p className={`priority ${taskToDetailPriority[0]}`}>{taskToDetailPriority[1]}</p>
+                            </div>
+                            <div className='detail-group'>
+                                <p className='title'>Создан</p>
+                                <p className='date'>{toShortLocalDate(new Date(taskToDetail.createdAt))}</p>
+                            </div>
+                        </div>
+
+                        <div className='actions-container'>
+                            <button className={`next-state-button ${taskToDetailStatus[0]}`}
+                                onClick={() => { moveStatus(taskToDetail); }}>
+                                {
+                                    taskToDetail.status == 0 ?
+                                    'Начать выполнение' :
+                                    taskToDetail.status == 1 ?
+                                    'Завершить' :
+                                    'Запланировать снова' 
+                                }
+                            </button>
+                            <button 
+                                onClick={(e) => { e.stopPropagation(); openEditModal(); }}
+                                className="edit-button">
+                                <img src={pen_icon} alt="" />
+                            </button>
+                            <button
+                                onClick={(e) => { e.stopPropagation(); openDeleteModal(); }}
+                                className="delete-button">
+                                <img src={trash_icon} alt="" />
+                            </button>
+                        </div>
                     </div> :
+                    openedModal == 'delete' ?
+                    <div key="delete-card" className="card delete-card">
+                        <button className="close-button"
+                            onClick={() => { 
+                                if (openedModal === 'create') 
+                                    setOpenedModal('');
+                                else 
+                                    setOpenedModal('detail');
+                             }}>✖</button>
+                        <h1>Подтверждение</h1>
+                        <p>Вы уверены что хотите удалить <span style={{ color: "var(--o4)"}}>{taskToDelete.title}</span>?</p>
+                        <button
+                            onClick={submitDelete}>Подтвердить</button>
+                    </div>  :
                     <></>
                 }
 
@@ -286,28 +456,15 @@ function FilterButton(params) {
 function TaskCard(params) {
     const task = params.task;
 
-    const [priorityColor, priorityText] = 
-            task.priority == 0 ?
-            ['gray', '▽ Низкий'] :
-            task.priority == 1 ?
-            ['blue', '◇ Нормальный'] :
-            task.priority == 2 ?
-            ['yellow', '◈ Средний'] :
-            task.priority == 3 ?
-            ['orange', '▲ Высокий'] :
-            ['red', '⚑ Критический'];
+    const [priorityColor, priorityText] = getPriorityProperties(task.priority);
+            
 
-    const [statusColor, statusText] = 
-        task.status == 0 ?
-        ['blue', 'В планах'] :
-        task.status == 1 ?
-        ['yellow', 'В процессе'] :
-        ['green', 'Выполнено'];
+    const [statusColor, statusText] = getStatusProperties(task.status);
         
 
     return ( 
         <div className={`task-card ${priorityColor}`}
-            >
+            onClick={params.onClick}>
             <div className='task-header'>
                 <p className='title-p'>{task.title}</p>
                 <span className={`status-span ${statusColor}`}>{statusText}</span>
