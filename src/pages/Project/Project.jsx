@@ -11,6 +11,7 @@ import pen_icon from '../../assets/icons/pen-icon.png';
 import { toShortLocalDate } from '../../utils/date';
 
 const ModeContext = createContext();
+const DragDropContext = createContext();
 
 function getPriorityProperties(priority) {
     return priority == 0 ?
@@ -71,6 +72,12 @@ function Project() {
 
     //#region pagination
     const [pagesCount, setPagesCount] = useState(1);
+    //#endregion
+
+    //#region drag and drop
+    const [dragIndex, setDragIndex] = useState(null);
+    const [overIndex, setOverIndex] = useState(null);
+    const [overPos, setOverPos] = useState(null);
     //#endregion
 
     useEffect(() => {
@@ -247,6 +254,22 @@ function Project() {
         setModalProjectPriority(taskToDetail.priority);
     }
 
+    function updateAfterDragAndDrop() {
+        if (dragIndex === null || overIndex === null) return;
+
+        const next = [...tasks];
+        const [moved] = next.splice(dragIndex, 1); // вынимаем элемент
+
+        let insertAt = overIndex;
+        if (overPos !== 'center') {
+            if (dragIndex < overIndex) insertAt--;       // компенсируем сдвиг после splice
+            if (overPos === 'after') insertAt++;
+        }
+
+        next.splice(insertAt, 0, moved);            // вставляем на новое место
+        setTasks(next);
+    }
+
     return (
         <div className='project-main-container'>
             <div className='header-container'>
@@ -285,17 +308,21 @@ function Project() {
                 </div>
 
             </div>
-            <div className='tasks-list'>
-                {
-                    tasks.map((t, i) => {
-                        return <TaskCard key={i} task={t} onClick={
-                            () => {
-                                openTaskDetailModal(t);
+            <DragDropContext.Provider value={{dragIndex, setDragIndex, overIndex, setOverIndex, overPos, setOverPos, update: updateAfterDragAndDrop}}>
+                <div className='tasks-list'>
+                    {
+                        tasks.map((t, i) => {
+                            if (!!t) {
+                                return <TaskCard key={t.id} index={i} task={t} onClick={
+                                    () => {
+                                        openTaskDetailModal(t);
+                                    }
+                                } />
                             }
-                        } />
-                    })
-                }
-            </div>
+                        })
+                    }
+                </div>
+            </DragDropContext.Provider>
 
             <div className={ !!openedModal ? 'modal-overlay' : 'modal-overlay hidden'}>
                 {
@@ -454,14 +481,31 @@ function FilterButton(params) {
 }
 
 function TaskCard(params) {
+    const dragDropContext = useContext(DragDropContext);
+
     const task = params.task;
 
     const [priorityColor, priorityText] = getPriorityProperties(task.priority);
-            
-
+    
     const [statusColor, statusText] = getStatusProperties(task.status);
-        
-
+    
+    // onDragOver={(e) => {
+    //     e.preventDefault();
+    //     const rect = e.currentTarget.getBoundingClientRect();
+    //     const mid = rect.left + rect.width / 2;
+    //     dragDropContext.setOverPos(Math.abs(e.clientX - mid) < 50 ? 'center' : e.clientX < mid ? 'before' : 'after');
+    //     dragDropContext.setOverIndex(params.index);
+    // }}
+    // onDragStart={() => {
+    //     dragDropContext.setDragIndex(params.index);
+    // }}
+    // onDragEnd={() => {
+    //     dragDropContext.setDragIndex(null);
+    //     dragDropContext.setOverIndex(null);
+    //     dragDropContext.setOverPos(null);
+    //     dragDropContext.update();
+    // }}
+    // draggable
     return ( 
         <div className={`task-card ${priorityColor}`}
             onClick={params.onClick}>
