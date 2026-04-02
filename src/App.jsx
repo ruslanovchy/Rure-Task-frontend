@@ -9,6 +9,7 @@ import Projects from './pages/Projects/Projects.jsx'
 import Project from './pages/Project/Project.jsx'
 import AuthProvider, { AuthContext } from './auth/auth.jsx'
 import LoadingScreen from './components/LoadingScreen.jsx'
+import IndexPage from './pages/IndexPage/IndexPage.jsx'
 
 export const ThemeContext = createContext();
 export const LoadingContext = createContext();
@@ -51,6 +52,7 @@ function AppContent() {
         <ThemeContext.Provider value={{ theme, setTheme }}>
 
           <Routes>
+            <Route path='/' element={<IndexPage />} />
             <Route path='/projects' element={<Projects />}>
               <Route index element={<ProjectsList />} />
               <Route path=':id' element={<Project />} />

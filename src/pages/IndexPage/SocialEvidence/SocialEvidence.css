@@ -1,0 +1,18 @@
+.social-evidence-section {
+    height: auto !important;
+}
+
+.social-evidence-container h1 {
+    text-align: center;
+    color: var(--o4);
+    font-size: 2rem;
+    margin: 50px 0 50px 0;
+}
+
+.reviews-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto 200px auto;
+}

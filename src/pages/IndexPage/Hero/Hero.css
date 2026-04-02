@@ -1,0 +1,40 @@
+.hero-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 50px 0 0 0;
+}
+
+.hero-container h1 {
+    font-size: 2.5rem;
+    color: var(--o4);
+    font-weight: 800;
+    max-width: 1300px;
+}
+
+.hero-container h2 {
+    font-size: 1.5rem;
+    max-width: 900px;
+    color: var(--text2)
+}
+
+.hero-container button {
+    max-width: 200px;
+}
+
+.hero-container .stats p {
+    margin: 150px 0 0 0;
+    font-size: 1.8rem;
+    max-width: 900px;
+    color: var(--text2);
+    font-weight: 600;
+}
+
+.hero-container .stats p .number-span {
+    color: var(--o4);
+    font-size: 2rem;
+    margin: 0 10px 0 0;
+}
