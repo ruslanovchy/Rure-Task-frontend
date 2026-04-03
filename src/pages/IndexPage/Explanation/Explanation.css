@@ -1,0 +1,62 @@
+.explanation-container {
+    display: flex;
+    padding: 60px 40px;
+    justify-content: center;
+    gap: clamp(0px, 8vw, 200px);
+}
+
+.explanation-container.orange {
+    background-color: var(--o4);
+}
+
+.explanation-container.right {
+    flex-direction: row-reverse;
+}
+
+.explanation-container video {
+    max-width: 500px;
+    border-radius: var(--radius);
+}
+
+.explanation-container.right video {
+    margin: 0 0 0 30px;
+}
+
+.explanation-container.left video {
+    margin: 0 30px 0 0;
+}
+
+.explanation-container .texts {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0 60px 0;
+}
+
+.explanation-container .texts h2 {
+    font-size: 1.6rem;
+    font-weight: 1000;
+    margin: 5px;
+}
+
+.explanation-container.orange .texts h2 {
+    color: var(--bg)
+}
+
+.explanation-container .texts p {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.explanation-container.orange .texts p {
+    color: var(--bg)
+}
+
+.explanation-container.white .texts h2 {
+    color: var(--o4)
+}
+
+.explanation-container.white .texts p {
+    color: var(--text2)
+}

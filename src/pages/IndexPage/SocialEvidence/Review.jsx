@@ -2,7 +2,6 @@ import Stars from "./Stars";
 import './Review.css'
 
 function Review(params) {
-    console.log(params.rating);
     return (
         <div className="review-container">
             <div className="first-row">

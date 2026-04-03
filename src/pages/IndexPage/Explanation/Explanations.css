@@ -1,0 +1,27 @@
+.explanations-section {
+    height: auto !important;
+}
+
+.explanations-section h1 {
+    font-size: 2.6rem;
+    color: var(--o4);
+    text-align: center;
+    font-weight: 1000;
+}
+
+.explanations-section h2 {
+    font-size: 1.6rem;
+    color: var(--text2);
+    text-align: center;
+    font-weight: 600;
+}
+
+.explanations-container {
+    max-height: 100%;
+    height: auto;
+    margin: 40px 0 0 0;
+}
+
+.explanations-list {
+    margin: 50px 0 0 0;
+}

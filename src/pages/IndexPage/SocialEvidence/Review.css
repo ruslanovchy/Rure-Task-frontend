@@ -4,6 +4,12 @@
     border-radius: var(--radius);
     margin: 5px;
     padding: 10px;
+    transition: all 0.2s;
+}
+
+.review-container:hover {
+    border: 1px solid var(--o4);
+    transform: translateY(-2px);
 }
 
 .review-container .photo {
