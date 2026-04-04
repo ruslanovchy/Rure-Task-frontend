@@ -6,7 +6,7 @@ function Hero() {
     const navigate = useNavigate();
     const counterValue = useCounter(800, 1500, true);
     return (
-        <section>
+        <section className='hero-section'>
             <div className="container hero-container">
                 <h1>Планируйте задачи для вашего бизнеса и следите за их выполнением</h1>
                 <h2>Быстро и удобно управляйте задачами для нескольких проектов. </h2>

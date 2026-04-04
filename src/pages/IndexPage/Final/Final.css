@@ -1,0 +1,27 @@
+
+.final-container {
+    background-color: var(--o4);
+    margin: 10px 10px 40px 10px;
+    padding: 40px 20px;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.final-container h2 {
+    text-align: center;
+    color: var(--bg)
+}
+
+.final-container button {
+    color: var(--o4);
+    background-color: var(--bg);
+    width: 300px;
+    margin: 30px 0 0 0;
+}
+
+.final-container button:hover {
+    transform: translateY(-2px);
+    background-color: var(--bg2);
+}
