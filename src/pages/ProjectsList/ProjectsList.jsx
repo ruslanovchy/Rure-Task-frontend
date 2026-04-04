@@ -69,7 +69,10 @@ function ProjectsList() {
             goToPage(1);
         }
         else if (data.projects.length <= 0) {
-            goToPage(data.totalPages)
+            if (data.totalPages > 0)
+                goToPage(data.totalPages);
+            else
+                goToPage(1);
         }
     }
 
