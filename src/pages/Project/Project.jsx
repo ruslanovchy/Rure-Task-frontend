@@ -134,7 +134,10 @@ function Project() {
                 goToPage(1);
             }
             else if (data.tasks.length <= 0) {
-                goToPage(data.totalPages)
+                if (data.totalPages > 0)
+                    goToPage(data.totalPages);
+                else
+                    goToPage(1);
             }
         }
         else {
