@@ -134,7 +134,10 @@ function Project() {
                 goToPage(1);
             }
             else if (data.tasks.length <= 0) {
-                goToPage(data.totalPages)
+                if (data.totalPages > 0)
+                    goToPage(data.totalPages);
+                else
+                    goToPage(1);
             }
         }
         else {
@@ -144,7 +147,10 @@ function Project() {
     }
 
     function clearCreateModal() {
-
+        setModalTitle('');
+        setModalDescription('');
+        setModalProjectPriority(0);
+        setModalProjectStatus(0);
     }
 
     function createSubmit(e) {
@@ -186,6 +192,7 @@ function Project() {
                 if (response.status === 200) {
                     setOpenedModal('');
                     updatePage();
+                    clearCreateModal();
                 }
             });
         }
