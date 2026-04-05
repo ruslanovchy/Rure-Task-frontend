@@ -3,7 +3,6 @@ import './Footer.css'
 
 
 function Footer() {
-    console.log(icons);
     return (
         <section className='footer-section'>
             <div className='footer-container'>
