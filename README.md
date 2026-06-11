@@ -1,17 +1,34 @@
-# React + Vite
+# Rure Task
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Languages: [ENG](README.md) [RUS](README.ru.md)
 
-Currently, two official plugins are available:
+**Rure Task** - An intuitive project management tool for teams. Streamline your workflow by organizing tasks around company goals, featuring clear priority levels and real-time status tracking.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Rure Task currently has basic task management system functionality.
 
-## React Compiler
+<!-- ## Links
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+[**Visit the website**](https://prudently-pseudoofficial-josefina.ngrok-free.dev) -->
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# Rure-Task-frontend
+**Backend**
+
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=.net&logoColor=white)
+![ASP.NET](https://img.shields.io/badge/ASP.NET-3980a8?style=for-the-badge&logo=.net&logoColor=white)
+
+**Frontend**
+
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![CSS](https://img.shields.io/badge/-CSS-black?style=for-the-badge&logo=CSS)
+![Axios](https://img.shields.io/badge/axios-854195?style=for-the-badge&logo=axios&logoColor=white)
+
+**Databases**
+
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+
+**Other**
+
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
